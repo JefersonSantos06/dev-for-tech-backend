@@ -79,8 +79,8 @@ public class TeacherService {
         addresRepository.save(addres);
         teacherRepository.save(entity);
 
-        if (entity.isCreateUser())
-            authSendMessage.sendMessageUpdateUser(entity.getPessoa(), oldEmail);
+/*        if (entity.isCreateUser())
+            authSendMessage.sendMessageUpdateUser(entity.getPessoa(), oldEmail);*/
         return new TeacherDTO(entity);
     }
 
@@ -90,8 +90,8 @@ public class TeacherService {
             TeacherEntity entity = checkById(id);
             teacherRepository.delete(entity);
 
-            if (entity.isCreateUser())
-                authSendMessage.sendMessageDeleteUser(entity.getPessoa().getEmailAddress());
+/*            if (entity.isCreateUser())
+                authSendMessage.sendMessageDeleteUser(entity.getPessoa().getEmailAddress());*/
         }catch(DataIntegrityViolationException e) {
             throw new DatabaseException("Integrity violation");
         }

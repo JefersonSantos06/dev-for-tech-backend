@@ -9,9 +9,10 @@ eureka:
       defaultZone: https://devfortech-school-discovery.azuremicroservices.io/eureka
     fetch-registry: true
   instance:
-    hostname: devfortech-school-${spring.application.name}.azuremicroservices.io
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}
+    prefer-ip-address: true
 
 app:
   authorization:
     url: https://devfortech-school-authorization-service.azuremicroservices.io
+  crud:
+    url: https://devfortech-school-crud.azuremicroservices.io

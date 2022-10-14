@@ -9,6 +9,8 @@ eureka:
     fetch-registry: true
   instance:
     hostname: localhost
+    prefer-ip-address: true
+
 
 logging:
   level:

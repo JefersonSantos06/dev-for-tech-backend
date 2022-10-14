@@ -1,6 +1,7 @@
 package com.devfortech.crudservice.domain.entity;
 
-import com.devfortech.crudservice.rest.dto.StudentDTO;
+import com.devfortech.crudservice.rest.dto.StudentRequestDTO;
+import com.devfortech.crudservice.rest.dto.StudentResponseDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -38,7 +39,14 @@ public class StudentEntity implements Serializable {
 
     private boolean createUser;
 
-    public StudentEntity(StudentDTO dto) {
+    public StudentEntity(StudentResponseDTO dto) {
+        this.id = dto.getId();
+        this.fees = dto.getFees();
+        this.pessoa = new PessoaEntity(dto.getPessoa());
+        this.createUser = dto.isCreateUser();
+    }
+
+    public StudentEntity(StudentRequestDTO dto) {
         this.id = dto.getId();
         this.fees = dto.getFees();
         this.pessoa = new PessoaEntity(dto.getPessoa());

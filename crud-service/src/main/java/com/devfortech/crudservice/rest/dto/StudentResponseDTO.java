@@ -13,18 +13,16 @@ import java.math.BigDecimal;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class StudentDTO extends RepresentationModel<StudentDTO>  implements Serializable {
+public class StudentResponseDTO extends RepresentationModel<StudentResponseDTO>  implements Serializable {
     private static final long serialVersionUID = 2306816499507776610L;
 
     private Long id;
     private BigDecimal fees;
     private PessoaDTO pessoa;
-
     private Long classeID;
-
     private boolean createUser;
 
-    public StudentDTO(StudentEntity entity, Long classeID) {
+    public StudentResponseDTO(StudentEntity entity, Long classeID) {
         this.id = entity.getId();
         this.fees = entity.getFees();
         this.pessoa = new PessoaDTO(entity.getPessoa());

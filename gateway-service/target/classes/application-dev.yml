@@ -9,6 +9,8 @@ eureka:
     fetch-registry: true
   instance:
     hostname: localhost
+    prefer-ip-address: true
+
 
 logging:
   level:
@@ -16,11 +18,8 @@ logging:
       springframework:
         security: DEBUG
 
-server:
-  servlet:
-    context-path: /api
-
-
 app:
   authorization:
     url: http://localhost:8081
+  crud:
+    url: http://localhost:8085

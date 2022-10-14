@@ -12,12 +12,11 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SignUpRequest implements Serializable {
-    private static final long serialVersionUID = -4436153936699398961L;
+public class DeleteUserRequest implements Serializable {
+    private static final long serialVersionUID = -7836239264891823851L;
 
     private String email;
     private String password;
-    private String nome;
     private String role;
 
 }

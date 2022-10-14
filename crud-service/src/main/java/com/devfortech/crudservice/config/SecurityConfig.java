@@ -23,8 +23,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        return bCryptPasswordEncoder;
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -45,9 +44,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**","/v3/**","/**")
-                .permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/h2-console/**", "/swagger-ui/**", "/v3/**")
+                        .permitAll()
+                    .anyRequest()
+                        .authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
     }

@@ -3,8 +3,10 @@ server:
     context-path: /crud
 
 spring:
+  application:
+    name: crud
   profiles:
-    active: test
+    active: dev
 
 security:
   jwt:

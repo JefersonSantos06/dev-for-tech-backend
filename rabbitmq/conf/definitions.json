@@ -1,0 +1,180 @@
+{
+  "bindings": [
+    {
+      "source": "auth.exchange",
+      "vhost": "/",
+      "destination": "auth.queue",
+      "destination_type": "queue",
+      "routing_key": "auth.key",
+      "arguments": {}
+    },
+    {
+      "source": "auth.exchange",
+      "vhost": "/",
+      "destination": "auth.delete.user",
+      "destination_type": "queue",
+      "routing_key": "auth.key.delete",
+      "arguments": {}
+    },
+    {
+      "source": "auth.exchange",
+      "vhost": "/",
+      "destination": "auth.update.user",
+      "destination_type": "queue",
+      "routing_key": "auth.key.update",
+      "arguments": {}
+    },
+    {
+      "source": "email.exchange",
+      "vhost": "/",
+      "destination": "email.send.queue",
+      "destination_type": "queue",
+      "routing_key": "email.send.key",
+      "arguments": {}
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "email.exchange",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "auth.exchange",
+      "vhost": "/",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "global_parameters": [
+    {
+      "name": "internal_cluster_id",
+      "value": "rabbitmq-cluster-id-yDwMQfbd8EAODngGgjiNNQ"
+    }
+  ],
+  "parameters": [],
+  "permissions": [
+    {
+      "user": "admin",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "crud",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "auth",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "email",
+      "vhost": "/",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    }
+  ],
+  "policies": [],
+  "product_name": "RabbitMQ",
+  "product_version": "3.11.0",
+  "queues": [
+    {
+      "name": "auth.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "email.send.queue",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "auth.delete.user",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    },
+    {
+      "name": "auth.update.user",
+      "vhost": "/",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-queue-type": "classic"
+      }
+    }
+  ],
+  "rabbit_version": "3.11.0",
+  "rabbitmq_version": "3.11.0",
+  "topic_permissions": [],
+  "users": [
+    {
+      "name": "admin",
+      "password_hash": "EWRt6pKmaFgpvrlzQq/2Ve/g0RfYlGxuEIma71F0FEb499Ep",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [
+        "administrator"
+      ],
+      "limits": {}
+    },
+    {
+      "name": "email",
+      "password_hash": "K8Em2GQX+xJqjjg4I0gmu++8nfHWoczXSqfXAFxjG38agGpu",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [
+        "administrator"
+      ],
+      "limits": {}
+    },
+    {
+      "name": "crud",
+      "password_hash": "ixlvUPfyUa2NwRDW343z8uV7yderYQBaluPycccGGoiRyHwa",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [
+        "administrator"
+      ],
+      "limits": {}
+    },
+    {
+      "name": "auth",
+      "password_hash": "ZDQrZoyIYmDA9XzxgfAgQLlggZRuacCwhOumo5wDurPvZG8v",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": [
+        "administrator"
+      ],
+      "limits": {}
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "/"
+    }
+  ]
+}

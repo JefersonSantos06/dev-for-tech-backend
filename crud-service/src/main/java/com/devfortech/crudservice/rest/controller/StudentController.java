@@ -1,6 +1,7 @@
 package com.devfortech.crudservice.rest.controller;
 
-import com.devfortech.crudservice.rest.dto.StudentDTO;
+import com.devfortech.crudservice.rest.dto.StudentRequestDTO;
+import com.devfortech.crudservice.rest.dto.StudentResponseDTO;
 import com.devfortech.crudservice.service.StudentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -27,32 +28,32 @@ public class StudentController {
 
     private final StudentService service;
 
-    private final PagedResourcesAssembler<StudentDTO> assembler;
+    private final PagedResourcesAssembler<StudentResponseDTO> assembler;
 
     @PostMapping
-    public StudentDTO create(@Valid @RequestBody StudentDTO dto) {
-        StudentDTO createDto = service.create(dto);
+    public StudentResponseDTO create(@Valid @RequestBody StudentRequestDTO dto) {
+        StudentResponseDTO createDto = service.create(dto);
         createDto.add(linkById(createDto.getId()));
         return createDto;
     }
 
     @GetMapping(value = "{id}")
-    public StudentDTO findById(@PathVariable Long id){
-        StudentDTO dto = service.findByID(id);
+    public StudentResponseDTO findById(@PathVariable Long id){
+        StudentResponseDTO dto = service.findByID(id);
         dto.add(linkById(id));
         return dto;
     }
 
     @GetMapping
     public ResponseEntity<?> findAll(@PageableDefault(page = 0, size = 10) Pageable pageable) {
-        Page<StudentDTO> dto = service.findAll(pageable);
+        Page<StudentResponseDTO> dto = service.findAll(pageable);
         dto.stream().forEach(v -> v.add(linkById(v.getId())));
-        PagedModel<EntityModel<StudentDTO>> pagedModel = assembler.toModel(dto);
+        PagedModel<EntityModel<StudentResponseDTO>> pagedModel = assembler.toModel(dto);
         return new ResponseEntity<>(pagedModel, HttpStatus.OK);
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody StudentDTO dto){
+    public ResponseEntity<?> update(@PathVariable Long id, @Valid @RequestBody StudentRequestDTO dto){
         var response = service.update(id,dto);
         response.add(linkById(response.getId()));
         return ResponseEntity.status(HttpStatus.OK).body(response);

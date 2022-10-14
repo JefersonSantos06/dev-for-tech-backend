@@ -20,6 +20,9 @@ public class TeacherDTO extends RepresentationModel<TeacherDTO> implements Seria
     private BigDecimal salary;
     private PessoaDTO pessoa;
     private boolean createUser;
+    private String password;
+    private String confirmPassword;
+    private String oldPassword;
 
     public TeacherDTO(TeacherEntity entity) {
         this.id = entity.getId();

@@ -58,9 +58,9 @@ public class AuthService {
         String password = PasswordUtils.getPassword(10);
 
         if (req.getPassword() == null) {
+            System.out.println(password);
             usuario.setPassword(passwordEncoder.encode(password));
-        }
-        else
+        }else
             usuario.setPassword(passwordEncoder.encode(req.getPassword()));
 
         usuario.setAccountNonExpired(true);

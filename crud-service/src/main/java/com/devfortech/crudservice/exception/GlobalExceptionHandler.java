@@ -21,8 +21,16 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(exceptionResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionResponse> unauthorizedExceptionException(UnauthorizedException exception,
+                                                                        WebRequest webRequest){
+        ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exception.getMessage(),
+                webRequest.getDescription(false));
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.UNAUTHORIZED);
+    }
+
         @ExceptionHandler(ResourceExistsException.class)
-    public ResponseEntity<ExceptionResponse> handleResourceExistsException(ResourceNotFoundException exception,
+    public ResponseEntity<ExceptionResponse> handleResourceExistsException(ResourceExistsException exception,
                                                                         WebRequest webRequest){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));
@@ -30,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
         @ExceptionHandler(DatabaseException.class)
-    public ResponseEntity<ExceptionResponse> handleDatabaseException(ResourceNotFoundException exception,
+    public ResponseEntity<ExceptionResponse> handleDatabaseException(DatabaseException exception,
                                                                         WebRequest webRequest){
         ExceptionResponse exceptionResponse = new ExceptionResponse(new Date(), exception.getMessage(),
                 webRequest.getDescription(false));

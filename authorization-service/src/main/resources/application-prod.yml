@@ -35,7 +35,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: https://devfortech-discovery-discovery.azuremicroservices.io:8761/eureka
+      defaultZone: https://devfortech-school-discovery.azuremicroservices.io/eureka
     fetch-registry: true
   instance:
     hostname: devfortech-school-authorization-service.azuremicroservices.io

@@ -7,15 +7,12 @@ import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.util.Base64;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 @Service
 public class JwtTokenProvider {
@@ -29,57 +26,37 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        UserDetails userDetails = new UserDetails() {
-            private static final long serialVersionUID = 1L;
+        HashMap role = (HashMap) ((ArrayList<?>) Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().get("roles")).get(0);
 
-            public boolean isEnabled() {
-                return true;
-            }
+        CustomUserDetails userDetails = CustomUserDetails.builder()
+                .username(Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject())
+                .roles(Collections.singleton(new SimpleGrantedAuthority(role.get("description").toString())))
+                .accountNonExpired(true)
+                .accountNonLocked(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .build();
 
-            public boolean isCredentialsNonExpired() {
-                return true;
-            }
-
-            public boolean isAccountNonLocked() {
-                return true;
-            }
-
-            public boolean isAccountNonExpired() {
-                return true;
-            }
-
-            public String getUsername() {
-                return "";
-            }
-
-            public String getPassword() {
-                return "";
-            }
-
-            public Collection<? extends GrantedAuthority> getAuthorities() {
-                return null;
-            }
-        };
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
 
-    public String resolveToken(HttpServletRequest req) {
-        String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+    public String resolveToken(HttpServletRequest request){
+        String bearerToken = request.getHeader("Authorization");
+        if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring(7, bearerToken.length());
         }
         return null;
     }
 
-    public boolean validateToken(String token) {
+    public boolean validateToken(String token){
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-            if (claims.getBody().getExpiration().before(new Date())) {
+            if (claims.getBody().getExpiration().before(new Date())){
                 return false;
             }
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        }catch (JwtException | IllegalArgumentException e){
+            return true;
         }
     }
 

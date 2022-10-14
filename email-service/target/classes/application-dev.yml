@@ -7,6 +7,14 @@ spring:
     port: 5672
     username: admin
     password: admin
+    email:
+      exchange: email.exchange
+      routingkey: email.send.key
+      queue: email.send.queue
+    auth:
+      exchange: auth.exchange
+      routingkey: auth.key
+      queue: auth.queue
 
   jpa:
     show-sql: false
@@ -20,16 +28,21 @@ spring:
     enabled: false
 
   datasource:
-    url: jdbc:mysql://localhost:3306/email-service?useSSL=true&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/email-service?allowPublicKeyRetrieval=true&useSSL=false&serverTimezone=UTC
     username: sa
     password: 9202157
 
   mail:
     host: smtp-relay.sendinblue.com
     port: 587
-    username: devfortechschool@gmail.com
-    password: dMUE296stOwVBxKn
-    protocol: smtp
+    username: jeferson.black.santos@gmail.com
+    password: bpGrW2O3d7cQXS90
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 eureka:
   client:
@@ -37,15 +50,10 @@ eureka:
       defaultZone: http://localhost:8761/eureka
     fetch-registry: true
   instance:
-    hostname: localhost
+    prefer-ip-address: true
 
 logging:
   level:
     org:
       springframework:
         security: DEBUG
-
-email:
-  rabbitmq:
-    exchange: email.exchange
-    queue: email.send.queue

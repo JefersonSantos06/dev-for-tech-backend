@@ -4,10 +4,24 @@ server:
     context-path: /auth
 
 spring:
+  rabbitmq:
+    host: 15.228.251.248
+    port: 5672
+    username: user
+    password: TVhuUhi2Kkoe
+    email:
+      exchange: email.exchange
+      routingkey: email.send.key
+      queue: email.send.queue
+    auth:
+      exchange: auth.exchange
+      routingkey: auth.key
+      queue: auth.queue
+
   jpa:
     show-sql: false
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
@@ -24,5 +38,5 @@ eureka:
       defaultZone: https://devfortech-school-discovery.azuremicroservices.io/eureka
     fetch-registry: true
   instance:
-    hostname: devfortech-school-${spring.application.name}.azuremicroservices.io
-    instance-id: ${eureka.instance.hostname}:${spring.application.name}
+    hostname: devfortech-school-authorization-service.azuremicroservices.io
+    prefer-ip-address: true

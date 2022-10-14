@@ -1,10 +1,6 @@
 package com.devfortech.crudservice.rest.message;
 
-import com.devfortech.crudservice.domain.entity.PessoaEntity;
-import com.devfortech.crudservice.rest.dto.ChangeUserRequest;
-import com.devfortech.crudservice.rest.dto.SignUpRequest;
-import com.devfortech.crudservice.rest.dto.StudentDTO;
-import com.devfortech.crudservice.rest.dto.TeacherDTO;
+import com.devfortech.crudservice.rest.dto.*;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +13,15 @@ public class AuthSendMessage {
     @Value("${spring.rabbitmq.auth.exchange}")
     private String exchange;
 
-    @Value("${spring.rabbitmq.auth.routingkey}")
-    private String routingkey;
+    @Value("${spring.rabbitmq.auth.routingkey.main}")
+    private String mainRK;
+
+    @Value("${spring.rabbitmq.auth.routingkey.update}")
+    private String updateRK;
+
+    @Value("${spring.rabbitmq.auth.routingkey.delete}")
+    private String deleteRK;
+
 
     public final RabbitTemplate rabbitTemplate;
 
@@ -27,40 +30,36 @@ public class AuthSendMessage {
         this.rabbitTemplate = template;
     }
 
-    @RabbitListener()
-    public void sendMessageCreateUser(StudentDTO studentDTO){
-        rabbitTemplate.convertAndSend(exchange, routingkey,
+    @RabbitListener
+    public void sendMessageCreateUser(StudentRequestDTO studentDTO){
+        rabbitTemplate.convertAndSend(exchange, mainRK,
                 SignUpRequest.builder()
                         .email(studentDTO.getPessoa().getEmailAddress())
+                        .password(studentDTO.getNewPassword())
                         .role("STUDENT")
                         .nome(studentDTO.getPessoa().getName())
                 .build());
     }
 
-    @RabbitListener()
+    @RabbitListener
     public void sendMessageCreateUser(TeacherDTO teacherDto){
-        rabbitTemplate.convertAndSend(exchange, routingkey,
+        rabbitTemplate.convertAndSend(exchange, mainRK,
                 SignUpRequest.builder()
                         .email(teacherDto.getPessoa().getEmailAddress())
+                        .password(teacherDto.getPassword())
                         .role("TEACHER")
                         .nome(teacherDto.getPessoa().getName())
                 .build());
     }
 
-    @RabbitListener(queues = "auth.delete.user")
-    public void sendMessageDeleteUser(String email){
-        rabbitTemplate.convertAndSend(email);
+    @RabbitListener
+    public void sendMessageDeleteUser(DeleteUserRequest req){
+        rabbitTemplate.convertAndSend(exchange, deleteRK, req);
     }
 
-    @RabbitListener(queues = "auth.update.user")
-    public void sendMessageUpdateUser(PessoaEntity pessoaEntity, String oldEmail){
-        ChangeUserRequest req = new ChangeUserRequest();
-
-        req.setName(pessoaEntity.getName());
-        req.setNewEmail(pessoaEntity.getEmailAddress());
-        req.setOldEmail(oldEmail);
-
-        rabbitTemplate.convertAndSend(req);
+    @RabbitListener
+    public void sendMessageUpdateUser(ChangeUserRequest req){
+        rabbitTemplate.convertAndSend(exchange, updateRK, req);
     }
 
 
